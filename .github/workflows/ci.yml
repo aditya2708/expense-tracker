@@ -9,6 +9,10 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  PHP_VERSION: '8.5'
+  NODE_VERSION: '22'
+
 jobs:
   backend:
     name: Backend (Pint + Pest)
@@ -21,15 +25,15 @@ jobs:
 
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.5'
+          php-version: ${{ env.PHP_VERSION }}
           extensions: mbstring, pdo_sqlite, sqlite3
           coverage: none
 
       - uses: actions/cache@v4
         with:
           path: backend/vendor
-          key: composer-${{ hashFiles('backend/composer.lock') }}
-          restore-keys: composer-
+          key: composer-${{ runner.os }}-php${{ env.PHP_VERSION }}-${{ hashFiles('backend/composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-php${{ env.PHP_VERSION }}-
 
       - run: composer install --no-interaction --prefer-dist --no-progress
 
@@ -50,7 +54,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
           cache-dependency-path: frontend/package-lock.json
 
