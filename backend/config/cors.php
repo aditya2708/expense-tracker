@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-     // Add your exact frontend domains here (DO NOT include a trailing slash)
+    // Add your exact frontend domains here (DO NOT include a trailing slash)
     'allowed_origins' => [
         env('FRONTEND_URL', 'http://localhost:5173'), // Common for Vite
     ],
